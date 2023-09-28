@@ -1,0 +1,207 @@
+<?php
+
+namespace DummyControllerSpace;
+
+use Throwable;
+use App\Modules\ModelPath\Model\ModelName;
+use App\Modules\ServicePath\Service\ServiceNameService;
+use Illuminate\Database\Eloquent\{Builder, Collection};
+use App\Modules\RequestPathName\Request\{StoreRequestClassName, UpdateRequestClassName};
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Repositories\BaseRepository;
+use OpenApi\Annotations as OA;
+
+/**
+ * Class DummyControllerClassName
+ * @package  App\Http\Controllers
+ */
+class DummyControllerClassNameController extends Controller
+{
+    private ServiceNameService $service;
+
+    public function __construct(ServiceNameService $service)
+    {
+        $this->service = $service;
+    }
+
+    /**
+     * @OA\Get(
+     *  path="/api/SwaggerNames",
+     *  operationId="indexSwaggerName",
+     *  tags={"SwaggerName"},
+     *  summary="Get list of SwaggerName",
+     *  description="Returns list of SwaggerName",
+     *  @OA\Response(response=200, description="Successful operation",
+     *    @OA\JsonContent(ref="#/components/schemas/SwaggerNames"),
+     *  ),
+     * )
+     *
+     * Display a listing of CrudGenerator.
+     * @return LengthAwarePaginator
+     * @throws Throwable
+     */
+    public function index(Request $request): LengthAwarePaginator|Collection
+    {
+        return $this->service->paginatedList($request->all());
+    }
+
+    /**
+     * @OA\Post(
+     *  operationId="storeSwaggerName",
+     *  summary="Insert a new SwaggerName",
+     *  description="Insert a new SwaggerName",
+     *  tags={"SwaggerName"},
+     *  path="/api/SwaggerName",
+     *  @OA\RequestBody(
+     *    description="SwaggerName to create",
+     *    required=true,
+     *    @OA\MediaType(
+     *      mediaType="application/json",
+     *      @OA\Schema(
+     *      @OA\Property(
+     *      title="data",
+     *      property="data",
+     *      type="object",
+     *      ref="#/components/schemas/SwaggerNames")
+     *     )
+     *    )
+     *  ),
+     *  @OA\Response(response="201",description="SwaggerName created",
+     *     @OA\JsonContent(
+     *      @OA\Property(
+     *       title="data",
+     *       property="data",
+     *       type="object",
+     *       ref="#/components/schemas/SwaggerNames"
+     *      ),
+     *    ),
+     *  ),
+     *  @OA\Response(response=422,description="Validation exception"),
+     * )
+     *
+     * @param StoreRequestClassName $request
+     * @return array|Builder|Collection|SwaggerName|Builder[]|SwaggerName[]
+     * @throws Throwable
+     */
+    public function store(StoreRequestClassName $request): array |Builder|Collection|SwaggerName
+    {
+        return $this->service->createModel($request->validated('data'));
+
+    }
+
+    /**
+     * @OA\Get(
+     *   path="/api/SwaggerName/{SwaggerName_id}",
+     *   summary="Show a SwaggerName from his Id",
+     *   description="Show a SwaggerName from his Id",
+     *   operationId="showSwaggerName",
+     *   tags={"SwaggerName"},
+     *   @OA\Parameter(ref="#/components/parameters/SwaggerName--id"),
+     *   @OA\Response(
+     *     response=200,
+     *     description="Successful operation",
+     *       @OA\JsonContent(
+     *       @OA\Property(
+     *       title="data",
+     *       property="data",
+     *       type="object",
+     *       ref="#/components/schemas/SwaggerNames"
+     *       ),
+     *     ),
+     *   ),
+     *   @OA\Response(response="404",description="SwaggerName not found"),
+     * )
+     *
+     * @param $swaggernameId
+     * @return array|Builder|Collection|SwaggerName
+     * @throws Throwable
+     */
+    public function show($swaggernameId): array |Builder|Collection|SwaggerName
+    {
+        return $this->service->getModelById($swaggernameId);
+    }
+
+    /**
+     * @OA\Patch(
+     *   operationId="updateSwaggerName",
+     *   summary="Update an existing SwaggerName",
+     *   description="Update an existing SwaggerName",
+     *   tags={"SwaggerName"},
+     *   path="/api/crudgenerators/{swaggername_id}",
+     *   @OA\Parameter(ref="#/components/parameters/SwaggerName--id"),
+     *   @OA\Response(
+     *     response=200,
+     *     description="Successful operation",
+     *       @OA\JsonContent(
+     *       @OA\Property(
+     *       title="data",
+     *       property="data",
+     *       type="object",
+     *       ref="#/components/schemas/SwaggerNames"
+     *       ),
+     *     ),
+     *   ),
+     *   @OA\Response(response="404",description="SwaggerName not found"),
+     *   @OA\RequestBody(
+     *     description="SwaggerName to update",
+     *     required=true,
+     *     @OA\MediaType(
+     *       mediaType="application/json",
+     *       @OA\Schema(
+     *        @OA\Property(
+     *        title="data",
+     *        property="data",
+     *        type="object",
+     *        ref="#/components/schemas/SwaggerNames")
+     *      )
+     *     )
+     *   )
+     *
+     * )
+     *
+     * @param UpdateRequestClassName $request
+     * @param int $swaggernameId
+     * @return array|Builder|Builder[]|Collection|SwaggerName|SwaggerName[]
+     * @throws Throwable
+     */
+    public function update(UpdateRequestClassName $request, int $swaggernameId): array |SwaggerName|Collection|Builder
+    {
+        return $this->service->updateModel($request->validated('data'), $swaggernameId);
+
+    }
+
+    /**
+     * @OA\Delete(
+     *  path="/api/SwaggerName/{SwaggerName_id}",
+     *  summary="Delete a SwaggerName",
+     *  description="Delete a SwaggerName",
+     *  operationId="SwaggerName",
+     *  tags={"SwaggerName"},
+     *   @OA\Response(
+     *     response=200,
+     *     description="Successful operation",
+     *       @OA\JsonContent(
+     *       @OA\Property(
+     *       title="data",
+     *       property="data",
+     *       type="object",
+     *       ref="#/components/schemas/SwaggerNames"
+     *       ),
+     *     ),
+     *   ),
+     *  @OA\Parameter(ref="#/components/parameters/SwaggerName--id"),
+     *  @OA\Response(response=204,description="No content"),
+     *  @OA\Response(response=404,description="SwaggerName not found"),
+     * )
+     *
+     * @param int $swaggernameId
+     * @return array|Builder|Builder[]|Collection|ModelName|ModelName[]
+     * @throws Throwable
+     */
+    public function destroy(int $swaggernameId): array |Builder|Collection|SwaggerName
+    {
+        return $this->service->deleteModel($swaggernameId);
+    }
+}

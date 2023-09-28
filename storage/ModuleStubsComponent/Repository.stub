@@ -1,0 +1,14 @@
+<?php
+
+namespace App\Modules\NameR\Repository;
+
+use App\Repositories\BaseRepository;
+use App\Modules\NameMFolder\Model\NameM;
+
+class RepositoryClassName extends BaseRepository
+{
+    public function __construct(FunctionModelName $model)
+    {
+        parent::__construct($model);
+    }
+}
